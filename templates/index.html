@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask CSV Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns, 1 fraction each */
+            gap: 20px; /* Gap between columns */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            grid-column: span 2; /* Span across both columns */
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #result-container {
+            max-width: 400px; /* Adjust as needed */
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            grid-column: span 2; /* Span across both columns */
+        }
+
+        #result-container h2 {
+            color: #333;
+        }
+
+        #result-container p {
+            margin-bottom: 8px;
+            color: #555;
+        }
+    </style>
+    <script>
+        function displayResults(result) {
+            var existingResults = document.getElementById('result-container');
+            if (existingResults) {
+                existingResults.remove();
+            }
+
+            var resultDiv = document.createElement('div');
+            resultDiv.id = 'result-container';
+            resultDiv.innerHTML = `
+                <h2>Result</h2>
+                <p><strong>Prefix:</strong> ${result.prefix}</p>
+                <p><strong>Family:</strong> ${result.family}</p>
+                <p><strong>WM:</strong> ${result.WM}</p>
+                <p><strong>Price Code:</strong> ${result.price_code}</p>
+                <p><strong>Price Details Conductor:</strong> ${result.price_code_details}</p>
+                <p><strong>Part Number:</strong> ${result.part_number}</p>
+                <p><strong>Primary Conductor:</strong> ${result.primary_cable}</p>
+                <p><strong>Secondary Conductor:</strong> ${result.secondary_cable}</p>
+            `;
+            
+            document.body.appendChild(resultDiv);
+        }
+
+        function submitForm() {
+            var formData = new FormData(document.querySelector('form'));
+
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => displayResults(result));
+        }
+    </script>
+</head>
+<body>
+    <h1>CSV Reader</h1>
+
+    <form onsubmit="event.preventDefault(); submitForm();">
+        <label for="application">Application:</label>
+        <input type="text" name="application" placeholder="cathodic" required>
+
+        <label for="connection">Connection:</label>
+        <input type="text" name="connection" placeholder="cable_to_cable" required>
+
+        <label for="family">Family:</label>
+        <input type="text" name="family" placeholder="SS" required>
+
+        <label for="primary_style">Primary Style:</label>
+        <input type="text" name="primary_style" placeholder="CONC" required>
+
+        <label for="secondary_style">Secondary Style:</label>
+        <input type="text" name="secondary_style" placeholder="CONC" required>
+
+        <label for="primary_conductor">Primary Conductor:</label>
+        <input type="text" name="primary_conductor" placeholder="300KCM" required>
+
+        <label for="secondary_conductor">Secondary Conductor:</label>
+        <input type="text" name="secondary_conductor" placeholder="400KCM" required>
+
+        <label for="reclaimed">Reclaimed:</label>
+        <input type="text" name="reclaimed" placeholder="no" required>
+
+        <label for="low_emissions">Low Emissions:</label>
+        <input type="text" name="low_emissions" placeholder="no" required>
+
+        <label for="rail_site">Rail Site:</label>
+        <input type="text" name="rail_site" placeholder="no" required>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="result-container"></div>
+
+</body>
+</html>

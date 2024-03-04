@@ -1,0 +1,7 @@
+flask
+flasgger
+flask_restful
+pyairtable
+gunicorn
+pandas
+flask-cors
