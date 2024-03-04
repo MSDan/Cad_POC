@@ -1,7 +1,8 @@
+Flask
+requests
+flask-cors
+gunicorn
 flask
 flasgger
 flask_restful
 pyairtable
-gunicorn
-pandas
-flask-cors
